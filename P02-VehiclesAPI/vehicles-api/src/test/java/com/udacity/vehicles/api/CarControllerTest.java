@@ -20,6 +20,7 @@ import com.udacity.vehicles.domain.car.Details;
 import com.udacity.vehicles.domain.manufacturer.Manufacturer;
 import com.udacity.vehicles.service.CarService;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Collections;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,6 +97,15 @@ public class CarControllerTest {
          *   the whole list of vehicles. This should utilize the car from `getCar()`
          *   below (the vehicle will be the first in the list).
          */
+    	Car car = getCar();
+    	mvc.perform(get(new URI("/cars"))
+    			.accept(MediaType.APPLICATION_JSON_UTF8)
+    			.contentType(MediaType.APPLICATION_JSON_UTF8))
+    		.andExpect(status().isOk())
+    		.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+    		.andExpect(jsonPath("$._embedded.carList", hasSize(1)))
+    		.andExpect(jsonPath("$._embedded.carList[0].details.model", is(car.getDetails().getModel())))
+    		.andExpect(jsonPath("$._embedded.carList[0].details.body", is(car.getDetails().getBody())));
 
     }
 
