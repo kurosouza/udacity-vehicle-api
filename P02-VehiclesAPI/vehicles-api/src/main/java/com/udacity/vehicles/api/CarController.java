@@ -4,12 +4,11 @@ package com.udacity.vehicles.api;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import com.udacity.vehicles.domain.car.Car;
-import com.udacity.vehicles.service.CarService;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.springframework.hateoas.Resource;
@@ -24,9 +23,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.udacity.vehicles.domain.car.Car;
+import com.udacity.vehicles.service.CarService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * Implements a REST-based controller for the Vehicles API.
  */
+@Api(description = "A REST-based controller for the Vehicles API.")
 @RestController
 @RequestMapping("/cars")
 class CarController {
@@ -44,6 +50,7 @@ class CarController {
      * @return list of vehicles
      */
     @GetMapping
+    @ApiOperation("Creates a list to store vehicles.")
     Resources<Resource<Car>> list() {
         List<Resource<Car>> resources = carService.list().stream().map(assembler::toResource)
                 .collect(Collectors.toList());
@@ -56,6 +63,7 @@ class CarController {
      * @param id the id number of the given vehicle
      * @return all information for the requested vehicle
      */
+    @ApiOperation("Gets information for a specific car by ID")
     @GetMapping("/{id}")
     Resource<Car> get(@PathVariable Long id) {
         /**
@@ -73,6 +81,7 @@ class CarController {
      * @return response that the new vehicle was added to the system
      * @throws URISyntaxException if the request contains invalid fields or syntax
      */
+    @ApiOperation("Posts information to create a new Vehicle")
     @PostMapping
     ResponseEntity<?> post(@Valid @RequestBody Car car) throws URISyntaxException {
         /**
@@ -92,6 +101,7 @@ class CarController {
      * @param car The updated information about the related vehicle.
      * @return response that the vehicle was updated in the system
      */
+    @ApiOperation("Updates the information for a vehicle in the system.")
     @PutMapping("/{id}")
     ResponseEntity<?> put(@PathVariable Long id, @Valid @RequestBody Car car) {
         /**
@@ -112,6 +122,7 @@ class CarController {
      * @param id The ID number of the vehicle to remove.
      * @return response that the related vehicle is no longer in the system
      */
+    @ApiOperation("Removes a vehicle from the system.")
     @DeleteMapping("/{id}")
     ResponseEntity<?> delete(@PathVariable Long id) {
         /**
