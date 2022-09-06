@@ -91,7 +91,7 @@ public class CarControllerTest {
 	}
 
 	/**
-	 * Tests for updating an existing cam
+	 * Tests for updating an existing car
 	 */
 	@Test
 	public void updateCar() throws Exception {
@@ -100,7 +100,8 @@ public class CarControllerTest {
 		mvc.perform(put(new URI("/cars/1")).accept(MediaType.APPLICATION_JSON_UTF8).content(json.write(car).getJson())
 				.contentType(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.condition", is("NEW")));
+				.andExpect(jsonPath("$.id", equalTo(1)))
+				.andExpect(jsonPath("$.condition", equalTo("NEW")));
 		
 	}
 	
